@@ -9,6 +9,11 @@ on:
 permissions:
   contents: write
 
+env:
+  CARGO_NET_RETRY: 10
+  CARGO_HTTP_TIMEOUT: 120
+  CARGO_REGISTRIES_CRATES_IO_PROTOCOL: sparse
+
 jobs:
   create-release:
     runs-on: ubuntu-22.04
@@ -106,18 +111,24 @@ jobs:
       - name: Install frontend dependencies
         run: bun install
 
+      - name: Pre-fetch Rust dependencies with retry
+        shell: bash
+        working-directory: ./src-tauri
+        run: |
+          for attempt in 1 2 3; do
+            cargo fetch && exit 0
+            echo "cargo fetch failed on attempt $attempt, retrying..."
+            sleep 10
+          done
+          echo "cargo fetch failed after 3 attempts"
+          exit 1
+
       - name: Build Tauri app
         uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
           TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
-          APPLE_CERTIFICATE: ${{ secrets.APPLE_CERTIFICATE }}
-          APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
-          APPLE_SIGNING_IDENTITY: ${{ secrets.APPLE_SIGNING_IDENTITY }}
-          APPLE_ID: ${{ secrets.APPLE_ID }}
-          APPLE_PASSWORD: ${{ secrets.APPLE_PASSWORD }}
-          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
         with:
           tauriScript: 'bun run tauri'
           releaseId: ${{ needs.create-release.outputs.release-id }}
