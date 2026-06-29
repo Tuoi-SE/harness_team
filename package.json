@@ -1,7 +1,7 @@
 {
   "name": "harness",
   "private": true,
-  "version": "0.20.3",
+  "version": "0.20.4",
   "type": "module",
   "description": "The desktop app for managing Claude Code — visual editor for settings, hooks, MCP servers, memory, skills, and more",
   "author": "Quang Tuoi <contact@tuoi-se.dev>",

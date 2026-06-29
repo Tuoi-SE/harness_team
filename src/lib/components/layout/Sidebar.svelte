@@ -31,8 +31,8 @@
   import { getTheme, toggleTheme } from "$lib/stores/theme.svelte";
   import type { CostSummary } from "$lib/tauri/commands";
   import { GitBranch as GithubIcon, X as XIcon } from "lucide-svelte";
-  import logoUrl from "$lib/assets/logo.svg";
-  import logoMarkUrl from "$lib/assets/logo-mark.svg";
+  import logoUrl from "$lib/assets/logo-full.png";
+  import logoMarkUrl from "$lib/assets/logo-full.png";
 
   let showAbout = $state(false);
   let appVersion = $state("...");
@@ -86,7 +86,7 @@
     class="flex items-center justify-between gap-3 px-4 py-4 border-b border-border w-full hover:bg-bg-hover transition-colors text-left"
     onclick={() => (showAbout = true)}
   >
-    <img src={logoMarkUrl} alt="Harness" class="w-8 h-8 shrink-0" />
+    <img src={logoMarkUrl} alt="Harness" class="w-12 h-10 shrink-0" />
     <p class="flex-1 text-right text-xs text-text-muted whitespace-nowrap">
       Trình quản lý cấu hình AI
     </p>
