@@ -31,7 +31,7 @@
   import { getTheme, toggleTheme } from "$lib/stores/theme.svelte";
   import type { CostSummary } from "$lib/tauri/commands";
   import { GitBranch as GithubIcon, X as XIcon } from "lucide-svelte";
-  import logoUrl from "$lib/assets/logo.png";
+  import logoUrl from "$lib/assets/logo.svg";
 
   let showAbout = $state(false);
   let appVersion = $state("...");

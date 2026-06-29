@@ -12,7 +12,7 @@
     Check,
     X,
   } from "lucide-svelte";
-  import logoUrl from "$lib/assets/logo.png";
+  import logoUrl from "$lib/assets/logo.svg";
 
   let visible = $state(false);
   let step = $state(0);
