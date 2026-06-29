@@ -7,21 +7,21 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/), and this
 ## [0.16.0] - 2026-04-16
 
 ### Fixed
-- **Context Engine — turn refs now expand.** Retrieval surfaced both `tool ref=tr_…` and `turn ref=u_…` IDs but only tool results had an expand path; turn refs fell through `PreToolUse` and hit Bash with a missing binary. Both the hook and the `glyphic-ctx expand` subcommand now look up turns as a fallback, so every ref Claude sees is actually expandable
+- **Context Engine — turn refs now expand.** Retrieval surfaced both `tool ref=tr_…` and `turn ref=u_…` IDs but only tool results had an expand path; turn refs fell through `PreToolUse` and hit Bash with a missing binary. Both the hook and the `harness-ctx expand` subcommand now look up turns as a fallback, so every ref Claude sees is actually expandable
 - **Context Engine — Reindex no longer freezes the UI.** `ctx_reindex_embeddings` was a sync Tauri command, which pins the main thread; the multi-second fastembed pass blocked every other invoke. Switched to `#[tauri::command(async)]` so embedding runs on a worker thread and the rest of the UI stays responsive
 - **Windows project folders resolved correctly ([#2](https://github.com/Tuoi-SE/Harness-Team/issues/2)).** `project_hash_to_path` used to convert every `-` in a Claude Code project folder name to `/`, mangling Windows paths like `C--Development-convivo-invitation` into `C//Development/convivo/invitation`. It now reads the authoritative `cwd` from the first line of any session `.jsonl` and uses that; dash-decoding stays as the fallback for folders without sessions. Reported by @mcbyte-it
 
 ## [0.15.0] - 2026-04-15
 
 ### Added
-- **Context Engine** — new sidecar binary `glyphic-ctx` wired into Claude Code hooks (`PreToolUse`, `PostToolUse`, `UserPromptSubmit`) for virtualizing tool outputs, indexing prompts, and injecting retrieved context on every turn
-- **Tool-output virtualization** — oversized `Bash`/`Grep`/`WebFetch`/`Glob` results are stored in a local SQLite database and replaced in-context with a `ref tr_xxxx` pointer + summary; Claude can expand refs on demand via `glyphic-ctx expand <id>`
-- **Hybrid retrieval** — BM25 full-text search via SQLite FTS5 reranked by cosine similarity on BGE-Small-EN-v1.5 embeddings (384-dim, CPU-only, model cached at `~/.glyphic/models/`); "auth failing" surfaces when you later ask about "login broken"
+- **Context Engine** — new sidecar binary `harness-ctx` wired into Claude Code hooks (`PreToolUse`, `PostToolUse`, `UserPromptSubmit`) for virtualizing tool outputs, indexing prompts, and injecting retrieved context on every turn
+- **Tool-output virtualization** — oversized `Bash`/`Grep`/`WebFetch`/`Glob` results are stored in a local SQLite database and replaced in-context with a `ref tr_xxxx` pointer + summary; Claude can expand refs on demand via `harness-ctx expand <id>`
+- **Hybrid retrieval** — BM25 full-text search via SQLite FTS5 reranked by cosine similarity on BGE-Small-EN-v1.5 embeddings (384-dim, CPU-only, model cached at `~/.harness/models/`); "auth failing" surfaces when you later ask about "login broken"
 - **Context Engine page** with Enable/Disable toggle, live stats (tool results stored, prompts indexed, bytes stored), semantic coverage card, reindex button, and list of recent virtualized outputs
 - **Reindex** — backfill embeddings for rows stored before embedding support, in 64-row batches with progress indicator
 - **Clean legacy** — one-click purge of pre-extractor rows (raw JSON envelopes) and rows for tools now on the skip list
-- `glyphic-ctx` CLI subcommands: `hook`, `query`, `reindex`, `expand`, `version`
-- Kill switch — set `GLYPHIC_CTX_DISABLED=1` to disable the engine at the shell level
+- `harness-ctx` CLI subcommands: `hook`, `query`, `reindex`, `expand`, `version`
+- Kill switch — set `HARNESS_CTX_DISABLED=1` to disable the engine at the shell level
 
 ### Changed
 - `Read` added to the skip-list — file contents live on disk, no value in storing them for retrieval

@@ -15,7 +15,7 @@ Thanks for your interest in contributing to Harness! This guide will help you ge
 
 ```bash
 git clone https://github.com/Tuoi-SE/Harness-Team.git
-cd glyphic
+cd Harness-Team
 bun install
 bun run tauri dev
 ```

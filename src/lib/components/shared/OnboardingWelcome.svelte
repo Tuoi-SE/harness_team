@@ -65,7 +65,7 @@
 
   function dismiss() {
     visible = false;
-    localStorage.setItem("glyphic-onboarded", "true");
+    localStorage.setItem("harness-onboarded", "true");
   }
 
   function goTo(page: string) {
@@ -82,7 +82,7 @@
       return;
     }
 
-    const onboarded = localStorage.getItem("glyphic-onboarded");
+    const onboarded = localStorage.getItem("harness-onboarded");
     if (!onboarded) {
       visible = true;
     }

@@ -108,9 +108,9 @@ fn build_summary(output: &str) -> String {
 fn render_virtualized(id: &str, tool: &str, bytes: usize, lines: usize, output: &str) -> String {
     let summary = build_summary(output);
     format!(
-        "[glyphic:ref {id}] {tool} output virtualized — {lines} lines / {kb:.1} KB\n\
-         To see a specific range, run: glyphic-ctx expand {id} --range START:END\n\
-         To see everything, run: glyphic-ctx expand {id}\n\
+        "[harness:ref {id}] {tool} output virtualized — {lines} lines / {kb:.1} KB\n\
+         To see a specific range, run: harness-ctx expand {id} --range START:END\n\
+         To see everything, run: harness-ctx expand {id}\n\
          --- preview (head {head} / tail {tail}) ---\n{summary}",
         kb = bytes as f64 / 1024.0,
         head = HEAD_LINES,
@@ -127,11 +127,11 @@ pub fn render_expand(tr: &ToolResult, range: Option<(usize, usize)>) -> String {
         None => (0, total),
     };
     if start >= end {
-        return format!("[glyphic:ref {}] empty range {}:{}", tr.id, start, end);
+        return format!("[harness:ref {}] empty range {}:{}", tr.id, start, end);
     }
     let body: String = lines[start..end].join("\n");
     format!(
-        "[glyphic:ref {id}] {tool} — lines {start}..{end} of {total}\n{body}",
+        "[harness:ref {id}] {tool} — lines {start}..{end} of {total}\n{body}",
         id = tr.id,
         tool = tr.tool,
     )
@@ -146,11 +146,11 @@ pub fn render_turn_expand(t: &super::db::Turn, range: Option<(usize, usize)>) ->
         None => (0, total),
     };
     if start >= end {
-        return format!("[glyphic:ref {}] empty range {}:{}", t.id, start, end);
+        return format!("[harness:ref {}] empty range {}:{}", t.id, start, end);
     }
     let body: String = lines[start..end].join("\n");
     format!(
-        "[glyphic:ref {id}] turn:{role} — lines {start}..{end} of {total}\n{body}",
+        "[harness:ref {id}] turn:{role} — lines {start}..{end} of {total}\n{body}",
         id = t.id,
         role = t.role,
     )

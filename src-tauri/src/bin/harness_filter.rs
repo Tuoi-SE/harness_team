@@ -1,11 +1,11 @@
-//! glyphic-filter — sidecar binary for token-optimized command filtering.
+//! harness-filter — sidecar binary for token-optimized command filtering.
 //!
 //! Modes:
 //!   hook    — Claude Code PreToolUse hook handler (JSON stdin → JSON stdout)
 //!   exec    — Execute a command, filter output, log savings, print result
 //!   version — Print version
 
-use glyphic_lib::filter;
+use harness_lib::filter;
 use std::io::{self, Read, Write};
 use std::process::Command;
 use std::time::Instant;
@@ -17,10 +17,10 @@ fn main() {
         Some("hook") => handle_hook(),
         Some("exec") => handle_exec(&args[2..]),
         Some("version") => {
-            println!("glyphic-filter {}", env!("CARGO_PKG_VERSION"));
+            println!("harness-filter {}", env!("CARGO_PKG_VERSION"));
         }
         _ => {
-            eprintln!("Usage: glyphic-filter <hook|exec|version>");
+            eprintln!("Usage: harness-filter <hook|exec|version>");
             std::process::exit(1);
         }
     }
@@ -69,7 +69,7 @@ fn handle_hook() {
     }
 }
 
-/// Bash hook: wrap command through glyphic-filter exec for output filtering.
+/// Bash hook: wrap command through harness-filter exec for output filtering.
 fn handle_bash_hook(tool_input: Option<&serde_json::Value>) {
     let command = tool_input
         .and_then(|ti| ti.get("command"))
@@ -90,7 +90,7 @@ fn handle_bash_hook(tool_input: Option<&serde_json::Value>) {
         "hookSpecificOutput": {
             "hookEventName": "PreToolUse",
             "permissionDecision": "allow",
-            "permissionDecisionReason": "glyphic-filter: wrapping command for token optimization",
+            "permissionDecisionReason": "harness-filter: wrapping command for token optimization",
             "updatedInput": {
                 "command": rewritten
             }
@@ -179,7 +179,7 @@ fn handle_read_hook(tool_input: Option<&serde_json::Value>) {
         "hookSpecificOutput": {
             "hookEventName": "PreToolUse",
             "permissionDecision": "allow",
-            "permissionDecisionReason": format!("glyphic-filter: capping read to {limit} lines (file ~{estimated_lines} lines)"),
+            "permissionDecisionReason": format!("harness-filter: capping read to {limit} lines (file ~{estimated_lines} lines)"),
             "updatedInput": updated
         }
     });
@@ -247,7 +247,7 @@ fn handle_grep_hook(tool_input: Option<&serde_json::Value>) {
         "hookSpecificOutput": {
             "hookEventName": "PreToolUse",
             "permissionDecision": "allow",
-            "permissionDecisionReason": format!("glyphic-filter: reducing head_limit from {original_limit} to {new_limit}"),
+            "permissionDecisionReason": format!("harness-filter: reducing head_limit from {original_limit} to {new_limit}"),
             "updatedInput": updated
         }
     });
@@ -277,8 +277,8 @@ fn is_binary_extension(path: &str) -> bool {
 fn should_exclude(command: &str) -> bool {
     let trimmed = command.trim();
 
-    // Already using glyphic-filter
-    if trimmed.contains("glyphic-filter") {
+    // Already using harness-filter
+    if trimmed.contains("harness-filter") {
         return true;
     }
 
@@ -311,7 +311,7 @@ fn should_exclude(command: &str) -> bool {
 fn handle_exec(args: &[String]) {
     let command = args.join(" ");
     if command.is_empty() {
-        eprintln!("glyphic-filter exec: no command provided");
+        eprintln!("harness-filter exec: no command provided");
         std::process::exit(1);
     }
 
@@ -367,7 +367,7 @@ fn handle_exec(args: &[String]) {
             std::process::exit(result.status.code().unwrap_or(1));
         }
         Err(e) => {
-            eprintln!("glyphic-filter: failed to execute command: {e}");
+            eprintln!("harness-filter: failed to execute command: {e}");
             std::process::exit(127);
         }
     }

@@ -1,8 +1,8 @@
-//! Hook dispatcher for glyphic-ctx. Reads a Claude Code hook JSON envelope from
+//! Hook dispatcher for harness-ctx. Reads a Claude Code hook JSON envelope from
 //! stdin and emits a response JSON on stdout.
 //!
 //! Events handled:
-//!   - PreToolUse(Bash)        → short-circuit `glyphic-ctx expand …` calls
+//!   - PreToolUse(Bash)        → short-circuit `harness-ctx expand …` calls
 //!   - PostToolUse(any)        → log to DB, inject additionalContext with ref
 //!   - UserPromptSubmit        → index prompt, inject retrieval block
 //!   - SessionStart            → inject last session summary if present
@@ -72,7 +72,7 @@ fn pre_tool_use(db: &Db, v: &Value) -> String {
                 "hookSpecificOutput": {
                     "hookEventName": "PreToolUse",
                     "permissionDecision": "deny",
-                    "permissionDecisionReason": "glyphic-ctx: expanded inline",
+                    "permissionDecisionReason": "harness-ctx: expanded inline",
                     "additionalContext": body,
                 }
             });
@@ -88,7 +88,7 @@ fn parse_expand_cmd(cmd: &str) -> Option<String> {
     if first_tokens.len() < 3 {
         return None;
     }
-    if !first_tokens[0].ends_with("glyphic-ctx") {
+    if !first_tokens[0].ends_with("harness-ctx") {
         return None;
     }
     if first_tokens[1] != "expand" {
@@ -150,14 +150,14 @@ fn post_tool_use(db: &Db, v: &Value) -> String {
     // output was virtualized, the ref comment also explains the expand flow.
     let note = if stored.virtualized {
         format!(
-            "glyphic-ctx: tool output stored as {id} ({bytes} bytes). \
-             Use `glyphic-ctx expand {id}` via Bash to re-read; future retrieval \
+            "harness-ctx: tool output stored as {id} ({bytes} bytes). \
+             Use `harness-ctx expand {id}` via Bash to re-read; future retrieval \
              will surface this automatically.",
             id = stored.id,
             bytes = stored.original_bytes,
         )
     } else {
-        format!("glyphic-ctx: ref {id} ({bytes} bytes)", id = stored.id, bytes = stored.original_bytes)
+        format!("harness-ctx: ref {id} ({bytes} bytes)", id = stored.id, bytes = stored.original_bytes)
     };
 
     json!({

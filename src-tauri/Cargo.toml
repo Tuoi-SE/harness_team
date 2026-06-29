@@ -1,20 +1,20 @@
 [package]
-name = "glyphic"
+name = "harness"
 version = "0.20.0"
 edition = "2021"
-default-run = "glyphic"
+default-run = "harness"
 
 [lib]
-name = "glyphic_lib"
+name = "harness_lib"
 crate-type = ["lib", "cdylib", "staticlib"]
 
 [[bin]]
-name = "glyphic-filter"
-path = "src/bin/glyphic_filter.rs"
+name = "harness-filter"
+path = "src/bin/harness_filter.rs"
 
 [[bin]]
-name = "glyphic-ctx"
-path = "src/bin/glyphic_ctx.rs"
+name = "harness-ctx"
+path = "src/bin/harness_ctx.rs"
 
 [build-dependencies]
 tauri-build = { version = "2", features = [] }

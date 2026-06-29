@@ -6,7 +6,7 @@
 //! Chosen model: `BGESmallENV15` (384-dim, top of MTEB small-model leaderboard,
 //! fast on CPU). Normalised L2 output — cosine == dot product.
 //!
-//! Cache dir: `~/.glyphic/models/`. Survives app upgrades.
+//! Cache dir: `~/.harness/models/`. Survives app upgrades.
 
 use std::path::PathBuf;
 use std::sync::{Mutex, OnceLock};

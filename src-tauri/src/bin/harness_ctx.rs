@@ -1,4 +1,4 @@
-//! glyphic-ctx — sidecar for the Context Engine.
+//! harness-ctx — sidecar for the Context Engine.
 //!
 //! Subcommands:
 //!   hook               Read a Claude Code hook JSON envelope from stdin, emit response.
@@ -10,8 +10,8 @@
 
 use std::io::{self, Read};
 
-use glyphic_lib::ctx::db::{Db, EmbedKind};
-use glyphic_lib::ctx::{embed, hook, virtualize};
+use harness_lib::ctx::db::{Db, EmbedKind};
+use harness_lib::ctx::{embed, hook, virtualize};
 
 fn main() {
     let args: Vec<String> = std::env::args().collect();
@@ -21,9 +21,9 @@ fn main() {
         Some("query") => run_query(&args[2..]),
         Some("reindex") => run_reindex(),
         Some("stats") => run_stats(),
-        Some("version") => println!("glyphic-ctx {}", env!("CARGO_PKG_VERSION")),
+        Some("version") => println!("harness-ctx {}", env!("CARGO_PKG_VERSION")),
         _ => {
-            eprintln!("Usage: glyphic-ctx <hook|expand|query|reindex|stats|version>");
+            eprintln!("Usage: harness-ctx <hook|expand|query|reindex|stats|version>");
             std::process::exit(1);
         }
     }
@@ -42,7 +42,7 @@ fn run_expand(args: &[String]) {
     let id = match args.first() {
         Some(id) => id.clone(),
         None => {
-            eprintln!("Usage: glyphic-ctx expand <ref_id> [--range START:END]");
+            eprintln!("Usage: harness-ctx expand <ref_id> [--range START:END]");
             std::process::exit(1);
         }
     };
@@ -65,7 +65,7 @@ fn run_expand(args: &[String]) {
     let db = match Db::open() {
         Ok(d) => d,
         Err(e) => {
-            eprintln!("glyphic-ctx: db open failed: {e}");
+            eprintln!("harness-ctx: db open failed: {e}");
             std::process::exit(1);
         }
     };
@@ -74,16 +74,16 @@ fn run_expand(args: &[String]) {
         Ok(None) => match db.get_turn(&id) {
             Ok(Some(tu)) => println!("{}", virtualize::render_turn_expand(&tu, range)),
             Ok(None) => {
-                eprintln!("glyphic-ctx: ref {id} not found");
+                eprintln!("harness-ctx: ref {id} not found");
                 std::process::exit(1);
             }
             Err(e) => {
-                eprintln!("glyphic-ctx: db error: {e}");
+                eprintln!("harness-ctx: db error: {e}");
                 std::process::exit(1);
             }
         },
         Err(e) => {
-            eprintln!("glyphic-ctx: db error: {e}");
+            eprintln!("harness-ctx: db error: {e}");
             std::process::exit(1);
         }
     }
@@ -92,13 +92,13 @@ fn run_expand(args: &[String]) {
 fn run_query(args: &[String]) {
     let q = args.join(" ");
     if q.is_empty() {
-        eprintln!("Usage: glyphic-ctx query <text>");
+        eprintln!("Usage: harness-ctx query <text>");
         std::process::exit(1);
     }
     let db = match Db::open() {
         Ok(d) => d,
         Err(e) => {
-            eprintln!("glyphic-ctx: db open failed: {e}");
+            eprintln!("harness-ctx: db open failed: {e}");
             std::process::exit(1);
         }
     };
@@ -134,7 +134,7 @@ fn run_reindex() {
     let db = match Db::open() {
         Ok(d) => d,
         Err(e) => {
-            eprintln!("glyphic-ctx: db open failed: {e}");
+            eprintln!("harness-ctx: db open failed: {e}");
             std::process::exit(1);
         }
     };
@@ -143,7 +143,7 @@ fn run_reindex() {
         let rows = match db.rows_needing_embedding(BATCH) {
             Ok(r) => r,
             Err(e) => {
-                eprintln!("glyphic-ctx: rows_needing_embedding: {e}");
+                eprintln!("harness-ctx: rows_needing_embedding: {e}");
                 std::process::exit(1);
             }
         };
@@ -155,7 +155,7 @@ fn run_reindex() {
             Some(e) => e,
             None => {
                 eprintln!(
-                    "glyphic-ctx: embedding model not available — model download \
+                    "harness-ctx: embedding model not available — model download \
                      may still be in progress or disabled. Try again shortly."
                 );
                 std::process::exit(1);
@@ -167,7 +167,7 @@ fn run_reindex() {
                 EmbedKind::Turn => db.update_turn_embedding(&row.id, vec),
             };
             if let Err(e) = res {
-                eprintln!("glyphic-ctx: update embedding ({}): {e}", row.id);
+                eprintln!("harness-ctx: update embedding ({}): {e}", row.id);
             } else {
                 total += 1;
             }
@@ -181,7 +181,7 @@ fn run_stats() {
     let db = match Db::open() {
         Ok(d) => d,
         Err(e) => {
-            eprintln!("glyphic-ctx: db open failed: {e}");
+            eprintln!("harness-ctx: db open failed: {e}");
             std::process::exit(1);
         }
     };
@@ -192,7 +192,7 @@ fn run_stats() {
             println!("bytes_stored: {}", s.bytes_stored);
         }
         Err(e) => {
-            eprintln!("glyphic-ctx: stats error: {e}");
+            eprintln!("harness-ctx: stats error: {e}");
             std::process::exit(1);
         }
     }

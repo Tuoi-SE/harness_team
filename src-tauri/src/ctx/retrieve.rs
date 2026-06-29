@@ -34,8 +34,8 @@ pub fn build_context_block(
 
 fn render_block(hits: &[RetrievedSnippet]) -> String {
     let mut out = String::from(
-        "<glyphic-context>\n\
-         Relevant prior results. Use `glyphic-ctx expand <id>` via Bash to fetch full content.\n",
+        "<harness-context>\n\
+         Relevant prior results. Use `harness-ctx expand <id>` via Bash to fetch full content.\n",
     );
     for h in hits {
         let tag = match h.kind.as_str() {
@@ -45,7 +45,7 @@ fn render_block(hits: &[RetrievedSnippet]) -> String {
         let preview = truncate(&h.preview, 300).replace('\n', " ");
         out.push_str(&format!("- [{tag}] {preview}\n"));
     }
-    out.push_str("</glyphic-context>");
+    out.push_str("</harness-context>");
     out
 }
 

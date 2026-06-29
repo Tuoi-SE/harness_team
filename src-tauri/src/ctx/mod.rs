@@ -1,5 +1,5 @@
 //! Context Engine — structured retrieval + tool-output virtualization on top of
-//! Claude Code hooks. Sidecar binary `glyphic-ctx` handles hook events; this
+//! Claude Code hooks. Sidecar binary `harness-ctx` handles hook events; this
 //! module exposes shared logic (DB, config, hook handlers) to both the sidecar
 //! and the Tauri commands layer.
 

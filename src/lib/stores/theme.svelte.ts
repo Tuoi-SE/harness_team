@@ -1,6 +1,6 @@
 export type Theme = "dark" | "light";
 
-let theme = $state<Theme>((typeof localStorage !== "undefined" && localStorage.getItem("glyphic-theme") as Theme) || "light");
+let theme = $state<Theme>((typeof localStorage !== "undefined" && localStorage.getItem("harness-theme") as Theme) || "light");
 
 export function getTheme(): Theme {
   return theme;
@@ -19,7 +19,7 @@ export function setTheme(t: Theme) {
 function applyTheme() {
   if (typeof document !== "undefined") {
     document.documentElement.setAttribute("data-theme", theme);
-    localStorage.setItem("glyphic-theme", theme);
+    localStorage.setItem("harness-theme", theme);
   }
 }
 

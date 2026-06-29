@@ -38,11 +38,11 @@ pub struct SavingsRecord {
 pub struct SavingsTracker;
 
 impl SavingsTracker {
-    /// Directory for all glyphic optimizer data.
+    /// Directory for all harness optimizer data.
     pub fn data_dir() -> PathBuf {
         dirs::home_dir()
             .expect("could not resolve home directory")
-            .join(".glyphic")
+            .join(".harness")
     }
 
     /// Path to the savings JSONL log file.
@@ -57,7 +57,7 @@ impl SavingsTracker {
 
     /// Path to the installed sidecar binary.
     pub fn bin_path() -> PathBuf {
-        Self::data_dir().join("bin").join("glyphic-filter")
+        Self::data_dir().join("bin").join("harness-filter")
     }
 
     /// Record a savings event. Appends a JSON line to savings.jsonl.

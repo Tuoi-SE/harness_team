@@ -5,7 +5,7 @@ use std::fs;
 use std::path::{Path, PathBuf};
 
 fn schedules_dir() -> PathBuf {
-    paths::claude_home().join("glyphic-schedules")
+    paths::claude_home().join("harness-schedules")
 }
 
 fn logs_dir(pipeline_id: &str) -> PathBuf {
@@ -20,7 +20,7 @@ fn plist_path(pipeline_id: &str) -> PathBuf {
     dirs::home_dir()
         .expect("home dir")
         .join("Library/LaunchAgents")
-        .join(format!("com.caio.glyphic.pipeline.{pipeline_id}.plist"))
+        .join(format!("com.caio.harness.pipeline.{pipeline_id}.plist"))
 }
 
 /// Build a shell script that executes the pipeline nodes in topological order.
@@ -64,9 +64,9 @@ fn generate_script(pipeline: &Pipeline) -> String {
                 // Pass the upstream output as an environment variable (a value,
                 // never code) and run the user command via `bash -c`, so an
                 // {{input}} containing shell metacharacters can't inject.
-                let cmd = cmd.replace("{{input}}", "\"$GLYPHIC_INPUT\"");
+                let cmd = cmd.replace("{{input}}", "\"$HARNESS_INPUT\"");
                 lines.push(format!(
-                    "RESULT=$(GLYPHIC_INPUT=\"$PREV_OUTPUT\" bash -c {} 2>&1)",
+                    "RESULT=$(HARNESS_INPUT=\"$PREV_OUTPUT\" bash -c {} 2>&1)",
                     shell_quote(&cmd)
                 ));
                 lines.push("echo \"$RESULT\"".to_string());
@@ -212,9 +212,9 @@ fn generate_script(pipeline: &Pipeline) -> String {
                 // Safe JSON-path walk (no eval): the path arrives via an env var
                 // and each dot-segment indexes a dict key, falling back to a list
                 // index. Any error drops to the fallback via `|| echo`.
-                let py = "import sys, json, os\nd = json.load(sys.stdin)\ncur = d\nfor seg in [s for s in os.environ.get('GLYPHIC_JPATH', '').split('.') if s != '']:\n    try:\n        cur = cur[seg]\n    except (TypeError, KeyError):\n        cur = cur[int(seg)]\nprint(cur)";
+                let py = "import sys, json, os\nd = json.load(sys.stdin)\ncur = d\nfor seg in [s for s in os.environ.get('HARNESS_JPATH', '').split('.') if s != '']:\n    try:\n        cur = cur[seg]\n    except (TypeError, KeyError):\n        cur = cur[int(seg)]\nprint(cur)";
                 lines.push(format!(
-                    "RESULT=$(echo \"$PREV_OUTPUT\" | GLYPHIC_JPATH={} python3 -c {} 2>/dev/null || echo {})",
+                    "RESULT=$(echo \"$PREV_OUTPUT\" | HARNESS_JPATH={} python3 -c {} 2>/dev/null || echo {})",
                     shell_quote(path), shell_quote(py), shell_quote(fallback)
                 ));
                 lines.push("echo \"$RESULT\"".to_string());
@@ -239,7 +239,7 @@ fn shell_quote(s: &str) -> String {
 /// Supports: minute hour day-of-month month day-of-week (standard 5-field cron).
 fn generate_plist(pipeline_id: &str, cron_expr: &str, script: &Path) -> String {
     let parts: Vec<&str> = cron_expr.split_whitespace().collect();
-    let label = format!("com.caio.glyphic.pipeline.{pipeline_id}");
+    let label = format!("com.caio.harness.pipeline.{pipeline_id}");
 
     let mut calendar_entries = String::new();
 

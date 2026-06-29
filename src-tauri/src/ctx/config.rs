@@ -42,7 +42,7 @@ pub fn is_skipped_tool(tool: &str) -> bool {
 pub fn data_dir() -> PathBuf {
     dirs::home_dir()
         .expect("could not resolve home directory")
-        .join(".glyphic")
+        .join(".harness")
 }
 
 pub fn db_path() -> PathBuf {
@@ -50,12 +50,12 @@ pub fn db_path() -> PathBuf {
 }
 
 pub fn bin_path() -> PathBuf {
-    data_dir().join("bin").join("glyphic-ctx")
+    data_dir().join("bin").join("harness-ctx")
 }
 
 /// Environment variable that disables the engine at runtime (kill switch).
 /// If set to "1", the hook prints an allow response and exits.
-pub const KILL_SWITCH_ENV: &str = "GLYPHIC_CTX_DISABLED";
+pub const KILL_SWITCH_ENV: &str = "HARNESS_CTX_DISABLED";
 
 pub fn is_disabled() -> bool {
     std::env::var(KILL_SWITCH_ENV).map(|v| v == "1").unwrap_or(false)

@@ -71,13 +71,13 @@ fn _price_cache_write(model: &str) -> f64 {
     else { 18.75 }
 }
 
-fn glyphic_settings_path() -> std::path::PathBuf {
-    paths::claude_home().join("glyphic-settings.json")
+fn harness_settings_path() -> std::path::PathBuf {
+    paths::claude_home().join("harness-settings.json")
 }
 
 #[tauri::command]
 pub fn get_budget() -> Result<BudgetSettings, String> {
-    let path = glyphic_settings_path();
+    let path = harness_settings_path();
     if !path.exists() {
         return Ok(BudgetSettings::default());
     }
@@ -97,7 +97,7 @@ pub fn set_budget(daily_limit: Option<f64>, monthly_limit: Option<f64>, plan_typ
     };
     let content = serde_json::to_string_pretty(&settings)
         .map_err(|e| format!("failed to serialize: {e}"))?;
-    fs::write(glyphic_settings_path(), content)
+    fs::write(harness_settings_path(), content)
         .map_err(|e| format!("failed to write: {e}"))
 }
 

@@ -112,7 +112,7 @@
   }
 
   function copyRef(id: string) {
-    navigator.clipboard.writeText(`glyphic-ctx expand ${id}`);
+    navigator.clipboard.writeText(`harness-ctx expand ${id}`);
     copiedId = id;
     setTimeout(() => (copiedId = null), 1500);
   }
@@ -485,13 +485,13 @@
               {
                 hook: "PreToolUse",
                 title: "Expand Refs",
-                desc: "Bắt ngang các lệnh Bash `glyphic-ctx expand <id>`, trả về kết quả đầy đủ trực tiếp từ store mà không cần chạy lại lệnh.",
+                desc: "Bắt ngang các lệnh Bash `harness-ctx expand <id>`, trả về kết quả đầy đủ trực tiếp từ store mà không cần chạy lại lệnh.",
                 color: "bg-warning/10 text-warning border-warning/20",
               },
               {
                 hook: "Kill Switch",
                 title: "Emergency Off",
-                desc: "Đặt `GLYPHIC_CTX_DISABLED=1` trong shell để bỏ qua toàn bộ hook ngay lập tức mà không cần sửa cài đặt.",
+                desc: "Đặt `HARNESS_CTX_DISABLED=1` trong shell để bỏ qua toàn bộ hook ngay lập tức mà không cần sửa cài đặt.",
                 color: "bg-error/10 text-error border-error/20",
               },
             ] as step}

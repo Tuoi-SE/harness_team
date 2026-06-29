@@ -423,7 +423,7 @@ pub struct SessionTags {
 }
 
 fn tags_path() -> std::path::PathBuf {
-    paths::claude_home().join("glyphic-session-tags.json")
+    paths::claude_home().join("harness-session-tags.json")
 }
 
 #[tauri::command]

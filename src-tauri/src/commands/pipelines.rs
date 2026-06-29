@@ -83,7 +83,7 @@ pub struct PipelineHistoryStore {
 }
 
 fn history_path() -> std::path::PathBuf {
-    paths::claude_home().join("glyphic-pipeline-history.json")
+    paths::claude_home().join("harness-pipeline-history.json")
 }
 
 fn load_history() -> PipelineHistoryStore {
@@ -166,7 +166,7 @@ fn days_to_date(days: u64) -> (u64, u64, u64) {
 // --- Pipeline Storage ---
 
 fn store_path() -> std::path::PathBuf {
-    paths::claude_home().join("glyphic-pipelines.json")
+    paths::claude_home().join("harness-pipelines.json")
 }
 
 pub fn load_store() -> PipelineStore {

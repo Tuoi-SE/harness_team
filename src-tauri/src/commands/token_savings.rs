@@ -39,7 +39,7 @@ pub fn get_optimizer_status() -> Result<OptimizerStatus, String> {
     };
 
     // Auto-upgrade sidecar if version doesn't match the app
-    let app_version = format!("glyphic-filter {}", env!("CARGO_PKG_VERSION"));
+    let app_version = format!("harness-filter {}", env!("CARGO_PKG_VERSION"));
     if sidecar_installed && sidecar_version.as_deref() != Some(&app_version) {
         if let Ok(source) = find_sidecar_source() {
             if std::fs::copy(&source, &bin).is_ok() {
@@ -106,7 +106,7 @@ fn check_hook_installed() -> bool {
                         hooks.iter().any(|h| {
                             h.get("command")
                                 .and_then(|c| c.as_str())
-                                .map(|c| c.contains("glyphic-optimizer"))
+                                .map(|c| c.contains("harness-optimizer"))
                                 .unwrap_or(false)
                         })
                     })
@@ -131,7 +131,7 @@ pub fn enable_optimizer() -> Result<(), String> {
     let data_dir = SavingsTracker::data_dir();
     let bin_dir = data_dir.join("bin");
     std::fs::create_dir_all(&bin_dir)
-        .map_err(|e| format!("failed to create ~/.glyphic/bin: {e}"))?;
+        .map_err(|e| format!("failed to create ~/.harness/bin: {e}"))?;
 
     // 2. Find and copy the sidecar binary
     let target_bin = SavingsTracker::bin_path();
@@ -158,7 +158,7 @@ pub fn enable_optimizer() -> Result<(), String> {
     std::fs::create_dir_all(&hooks_dir)
         .map_err(|e| format!("failed to create hooks dir: {e}"))?;
 
-    let hook_path = hooks_dir.join("glyphic-optimizer.sh");
+    let hook_path = hooks_dir.join("harness-optimizer.sh");
     let hook_content = format!(
         "#!/bin/bash\n\"{bin}\" hook\n",
         bin = target_bin.to_string_lossy()
@@ -211,7 +211,7 @@ pub fn enable_optimizer() -> Result<(), String> {
         .as_array_mut()
         .ok_or("PreToolUse is not an array")?;
 
-    // Remove any existing glyphic-optimizer entries first
+    // Remove any existing harness-optimizer entries first
     arr.retain(|entry| {
         !entry
             .get("hooks")
@@ -220,7 +220,7 @@ pub fn enable_optimizer() -> Result<(), String> {
                 hooks.iter().any(|h| {
                     h.get("command")
                         .and_then(|c| c.as_str())
-                        .map(|c| c.contains("glyphic-optimizer"))
+                        .map(|c| c.contains("harness-optimizer"))
                         .unwrap_or(false)
                 })
             })
@@ -242,26 +242,26 @@ pub fn enable_optimizer() -> Result<(), String> {
     Ok(())
 }
 
-/// Locate the glyphic-filter binary. Checks dev build path, then app bundle.
+/// Locate the harness-filter binary. Checks dev build path, then app bundle.
 fn find_sidecar_source() -> Result<std::path::PathBuf, String> {
     // Dev mode: check cargo target directory
     let dev_paths = [
         // Debug build
         std::env::current_exe()
             .ok()
-            .and_then(|p| p.parent().map(|d| d.join("glyphic-filter"))),
+            .and_then(|p| p.parent().map(|d| d.join("harness-filter"))),
         // Release build
         std::env::current_exe()
             .ok()
             .and_then(|p| {
                 p.parent()
                     .and_then(|d| d.parent())
-                    .map(|d| d.join("release").join("glyphic-filter"))
+                    .map(|d| d.join("release").join("harness-filter"))
             }),
         // Alongside the main binary
         std::env::current_exe()
             .ok()
-            .map(|p| p.with_file_name("glyphic-filter")),
+            .map(|p| p.with_file_name("harness-filter")),
     ];
 
     for path in dev_paths.iter().flatten() {
@@ -271,7 +271,7 @@ fn find_sidecar_source() -> Result<std::path::PathBuf, String> {
     }
 
     Err(
-        "Could not find glyphic-filter binary. Make sure it's built with: cargo build --bin glyphic-filter"
+        "Could not find harness-filter binary. Make sure it's built with: cargo build --bin harness-filter"
             .to_string(),
     )
 }
@@ -300,7 +300,7 @@ pub fn disable_optimizer() -> Result<(), String> {
                             hooks.iter().any(|h| {
                                 h.get("command")
                                     .and_then(|c| c.as_str())
-                                    .map(|c| c.contains("glyphic-optimizer"))
+                                    .map(|c| c.contains("harness-optimizer"))
                                     .unwrap_or(false)
                             })
                         })

@@ -210,7 +210,7 @@ bun run tauri build
 ### Project Structure
 
 ```
-glyphic/
+harness-team/
 ├── src/                    # Svelte 5 frontend
 │   ├── lib/
 │   │   ├── components/     # 56 Svelte components (18 page modules)

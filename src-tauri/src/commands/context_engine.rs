@@ -1,7 +1,7 @@
-//! Tauri commands for the Context Engine (glyphic-ctx sidecar).
+//! Tauri commands for the Context Engine (harness-ctx sidecar).
 //!
 //! Mirrors the shape of `token_savings.rs`: install the binary into
-//! `~/.glyphic/bin`, write a wrapper script into `~/.claude/hooks/`, register
+//! `~/.harness/bin`, write a wrapper script into `~/.claude/hooks/`, register
 //! PostToolUse / UserPromptSubmit / PreToolUse entries in settings.json.
 
 use serde::Serialize;
@@ -10,7 +10,7 @@ use std::path::{Path, PathBuf};
 use crate::ctx::{config, db::{Db, EmbedKind}, embed};
 use crate::paths;
 
-const HOOK_SCRIPT_NAME: &str = "glyphic-ctx.sh";
+const HOOK_SCRIPT_NAME: &str = "harness-ctx.sh";
 const HOOK_EVENTS: &[&str] = &["PreToolUse", "PostToolUse", "UserPromptSubmit"];
 
 #[derive(Serialize)]
@@ -54,7 +54,7 @@ pub fn ctx_get_status() -> Result<ContextEngineStatus, String> {
     };
 
     // Auto-upgrade if version mismatch
-    let app_version = format!("glyphic-ctx {}", env!("CARGO_PKG_VERSION"));
+    let app_version = format!("harness-ctx {}", env!("CARGO_PKG_VERSION"));
     if sidecar_installed && sidecar_version.as_deref() != Some(&app_version) {
         if let Ok(source) = find_sidecar_source() {
             if std::fs::copy(&source, &bin).is_ok() {
@@ -177,7 +177,7 @@ pub fn ctx_enable() -> Result<(), String> {
     let data_dir = config::data_dir();
     let bin_dir = data_dir.join("bin");
     std::fs::create_dir_all(&bin_dir)
-        .map_err(|e| format!("failed to create ~/.glyphic/bin: {e}"))?;
+        .map_err(|e| format!("failed to create ~/.harness/bin: {e}"))?;
 
     let target_bin = config::bin_path();
     let source_bin = find_sidecar_source()?;
@@ -286,10 +286,10 @@ fn check_hook_installed() -> bool {
         Some(h) => h,
         None => return false,
     };
-    HOOK_EVENTS.iter().all(|ev| event_has_glyphic_ctx(hooks, ev))
+    HOOK_EVENTS.iter().all(|ev| event_has_harness_ctx(hooks, ev))
 }
 
-fn event_has_glyphic_ctx(hooks: &serde_json::Value, event: &str) -> bool {
+fn event_has_harness_ctx(hooks: &serde_json::Value, event: &str) -> bool {
     hooks
         .get(event)
         .and_then(|arr| arr.as_array())
@@ -302,7 +302,7 @@ fn event_has_glyphic_ctx(hooks: &serde_json::Value, event: &str) -> bool {
                         list.iter().any(|h| {
                             h.get("command")
                                 .and_then(|c| c.as_str())
-                                .map(|c| c.contains("glyphic-ctx"))
+                                .map(|c| c.contains("harness-ctx"))
                                 .unwrap_or(false)
                         })
                     })
@@ -338,7 +338,7 @@ fn update_settings(hook_path: &Path, enable: bool) -> Result<(), String> {
             .as_array_mut()
             .ok_or(format!("{event} is not an array"))?;
 
-        // Always strip any existing glyphic-ctx entries first (idempotent)
+        // Always strip any existing harness-ctx entries first (idempotent)
         arr.retain(|entry| {
             !entry
                 .get("hooks")
@@ -347,7 +347,7 @@ fn update_settings(hook_path: &Path, enable: bool) -> Result<(), String> {
                     list.iter().any(|h| {
                         h.get("command")
                             .and_then(|c| c.as_str())
-                            .map(|c| c.contains("glyphic-ctx"))
+                            .map(|c| c.contains("harness-ctx"))
                             .unwrap_or(false)
                     })
                 })
@@ -379,16 +379,16 @@ fn find_sidecar_source() -> Result<PathBuf, String> {
     let candidates: Vec<Option<PathBuf>> = vec![
         std::env::current_exe()
             .ok()
-            .and_then(|p| p.parent().map(|d| d.join("glyphic-ctx"))),
+            .and_then(|p| p.parent().map(|d| d.join("harness-ctx"))),
         std::env::current_exe().ok().and_then(|p| {
             p.parent()
                 .and_then(|d| d.parent())
-                .map(|d| d.join("release").join("glyphic-ctx"))
+                .map(|d| d.join("release").join("harness-ctx"))
         }),
         std::env::current_exe().ok().and_then(|p| {
             p.parent()
                 .and_then(|d| d.parent())
-                .map(|d| d.join("debug").join("glyphic-ctx"))
+                .map(|d| d.join("debug").join("harness-ctx"))
         }),
     ];
     for c in candidates.into_iter().flatten() {
@@ -396,5 +396,5 @@ fn find_sidecar_source() -> Result<PathBuf, String> {
             return Ok(c);
         }
     }
-    Err("glyphic-ctx binary not found; build the project first".into())
+    Err("harness-ctx binary not found; build the project first".into())
 }
