@@ -31,7 +31,7 @@
   import { getTheme, toggleTheme } from "$lib/stores/theme.svelte";
   import type { CostSummary } from "$lib/tauri/commands";
   import { GitBranch as GithubIcon, X as XIcon } from "lucide-svelte";
-  import logoUrl from "$lib/assets/logo.svg";
+  import logoUrl from "$lib/assets/logo.png";
 
   let showAbout = $state(false);
   let appVersion = $state("...");
@@ -85,7 +85,7 @@
     class="flex items-center gap-2 px-4 py-[13.5px] border-b border-border w-full hover:bg-bg-hover transition-colors text-left"
     onclick={() => (showAbout = true)}
   >
-    <img src={logoUrl} alt="Harness" class="w-15 h-15" />
+    <img src={logoUrl} alt="Harness" class="w-28 h-auto shrink-0" />
         <div>
       <h1 class="text-sm font-semibold text-text-primary">Harness</h1>
       <p class="text-xs text-text-muted">Trình quản lý cấu hình AI</p>
