@@ -82,14 +82,13 @@
 >
   <!-- Logo (clickable → About) -->
   <button
-    class="flex items-center gap-2 px-4 py-[13.5px] border-b border-border w-full hover:bg-bg-hover transition-colors text-left"
+    class="flex items-center justify-between gap-3 px-4 py-4 border-b border-border w-full hover:bg-bg-hover transition-colors text-left"
     onclick={() => (showAbout = true)}
   >
-    <img src={logoUrl} alt="Harness" class="w-28 h-auto shrink-0" />
-        <div>
-      <h1 class="text-sm font-semibold text-text-primary">Harness</h1>
-      <p class="text-xs text-text-muted">Trình quản lý cấu hình AI</p>
-    </div>
+    <img src={logoUrl} alt="Harness" class="w-16 h-auto shrink-0" />
+    <p class="flex-1 text-right text-xs text-text-muted whitespace-nowrap">
+      Trình quản lý cấu hình AI
+    </p>
   </button>
 
   <!-- Navigation -->
@@ -184,13 +183,13 @@
 
       <div class="mt-6 space-y-2">
         <a
-          href="https://github.com/Tuoi-SE/Harness-Team"
+          href="https://github.com/Tuoi-SE/harness_team"
           target="_blank"
           rel="noopener"
           class="flex items-center justify-center gap-2 text-sm text-text-secondary hover:text-text-primary transition-colors"
         >
           <GithubIcon size={14} />
-          github.com/Tuoi-SE/Harness-Team
+          github.com/Tuoi-SE/harness_team
         </a>
       </div>
 

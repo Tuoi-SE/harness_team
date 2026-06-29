@@ -167,7 +167,7 @@ Visual editor for `~/.claude/keybindings.json`. View and customize all Claude Co
 
 ### Download
 
-Go to [Releases](https://github.com/Tuoi-SE/Harness-Team/releases) and download the latest version for your platform:
+Go to [Releases](https://github.com/Tuoi-SE/harness_team/releases) and download the latest version for your platform:
 
 - **macOS (Apple Silicon)**: `Harness_x.x.x_aarch64.dmg`
 - **macOS (Intel)**: `Harness_x.x.x_x64.dmg`
@@ -194,8 +194,8 @@ The app includes **auto-updates** — you'll be notified when a new version is a
 
 ```bash
 # Clone
-git clone https://github.com/Tuoi-SE/Harness-Team.git
-cd Harness-Team
+git clone https://github.com/Tuoi-SE/harness_team.git
+cd harness_team
 
 # Install dependencies
 bun install

@@ -1,18 +1,18 @@
 {
   "name": "harness",
   "private": true,
-  "version": "0.20.0",
+  "version": "0.20.1",
   "type": "module",
   "description": "The desktop app for managing Claude Code — visual editor for settings, hooks, MCP servers, memory, skills, and more",
   "author": "Quang Tuoi <contact@tuoi-se.dev>",
   "license": "AGPL-3.0",
-  "homepage": "https://github.com/Tuoi-SE/Harness-Team",
+  "homepage": "https://github.com/Tuoi-SE/harness_team",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Tuoi-SE/Harness-Team.git"
+    "url": "https://github.com/Tuoi-SE/harness_team.git"
   },
   "bugs": {
-    "url": "https://github.com/Tuoi-SE/Harness-Team/issues"
+    "url": "https://github.com/Tuoi-SE/harness_team/issues"
   },
   "keywords": [
     "claude-code",

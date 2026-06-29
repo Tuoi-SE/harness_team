@@ -14,8 +14,8 @@ Thanks for your interest in contributing to Harness! This guide will help you ge
 ### Setup
 
 ```bash
-git clone https://github.com/Tuoi-SE/Harness-Team.git
-cd Harness-Team
+git clone https://github.com/Tuoi-SE/harness_team.git
+cd harness_team
 bun install
 bun run tauri dev
 ```
@@ -82,7 +82,7 @@ Types: `feat`, `fix`, `refactor`, `docs`, `test`, `chore`, `perf`, `style`
 
 ## Reporting Bugs
 
-Use the [Bug Report](https://github.com/Tuoi-SE/Harness-Team/issues/new?template=bug_report.md) issue template. Include:
+Use the [Bug Report](https://github.com/Tuoi-SE/harness_team/issues/new?template=bug_report.md) issue template. Include:
 
 - OS and version
 - Harness version
@@ -92,7 +92,7 @@ Use the [Bug Report](https://github.com/Tuoi-SE/Harness-Team/issues/new?template
 
 ## Feature Requests
 
-Use the [Feature Request](https://github.com/Tuoi-SE/Harness-Team/issues/new?template=feature_request.md) issue template. Describe:
+Use the [Feature Request](https://github.com/Tuoi-SE/harness_team/issues/new?template=feature_request.md) issue template. Describe:
 
 - The problem you're trying to solve
 - Your proposed solution

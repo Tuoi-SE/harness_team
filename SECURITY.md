@@ -13,7 +13,7 @@ If you discover a security vulnerability in Harness, please report it responsibl
 
 **Do NOT open a public issue for security vulnerabilities.**
 
-Instead, contact **Quang Tuoi** via **https://github.com/Tuoi-SE/Harness-Team** with:
+Instead, contact **Quang Tuoi** via **https://github.com/Tuoi-SE/harness_team** with:
 
 - Description of the vulnerability
 - Steps to reproduce
@@ -53,6 +53,6 @@ Harness only makes network requests for:
 
 ## Best Practices
 
-- Always download Harness from the [official GitHub releases](https://github.com/Tuoi-SE/Harness-Team/releases)
+- Always download Harness from the [official GitHub releases](https://github.com/Tuoi-SE/harness_team/releases)
 - Verify the app signature on macOS (Gatekeeper does this automatically)
 - Keep Harness updated to receive security fixes
